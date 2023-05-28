@@ -156,6 +156,10 @@ class Tree {
       return true;
     return false;
   }
+
+  rebalance(){
+    this.root =  new Tree(this.inOrder()).root;
+  }
 }
 
 const prettyPrint = (node = tree.root, prefix = "", isLeft = true) => {
@@ -239,3 +243,9 @@ console.log ('is Balanced: ' + tree2.isBalanced());
 tree2.insert(144);
 tree2.insert(155);
 console.log ('is Balanced: ' + tree2.isBalanced());
+prettyPrint(tree2.root);
+console.log ('rebalanced');
+tree2.rebalance();
+prettyPrint(tree2.root);
+
+
