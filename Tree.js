@@ -1,5 +1,6 @@
 import Node from "./Node.js";
-class Tree {
+
+export default class Tree {
   constructor(array) {
     this.root = this.buildTree(array);
   }
@@ -13,7 +14,6 @@ class Tree {
     //removes duplicate elements
     arr = [...new Set(arr)];
 
-    console.log(arr);
     //builds and returns a tree
     if (arr.length === 0) return null;
     else return this.build(arr);
@@ -157,11 +157,28 @@ class Tree {
     return false;
   }
 
-  rebalance(){
-    this.root =  new Tree(this.inOrder()).root;
+  rebalance() {
+    this.root = new Tree(this.inOrder()).root;
   }
-}
 
+  prettyPrint(node = this.root, prefix = "", isLeft = true) {
+    if (node === null) {
+      return;
+    }
+    if (node.right !== null) {
+      this.prettyPrint(
+        node.right,
+        `${prefix}${isLeft ? "│   " : "    "}`,
+        false
+      );
+    }
+    console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.value}`);
+    if (node.left !== null) {
+      this.prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+    }
+  }
+} /*
+/*
 const prettyPrint = (node = tree.root, prefix = "", isLeft = true) => {
   if (node === null) {
     return;
@@ -173,8 +190,8 @@ const prettyPrint = (node = tree.root, prefix = "", isLeft = true) => {
   if (node.left !== null) {
     prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
   }
-};
-
+}; /*
+/*
 const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const tree = new Tree(arr);
 console.log(tree);
@@ -247,5 +264,4 @@ prettyPrint(tree2.root);
 console.log ('rebalanced');
 tree2.rebalance();
 prettyPrint(tree2.root);
-
-
+*/
