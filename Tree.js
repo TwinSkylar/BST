@@ -5,6 +5,13 @@ export default class Tree {
     this.root = this.buildTree(array);
   }
 
+  /*
+  Purpose:  Build a binary search tree given an array of integers
+  Parameters:
+    arr: an array of integers
+  Return:  The root node of a tree
+  */
+
   buildTree(arr) {
     //sorts the array
     arr.sort((a, b) => {
@@ -19,35 +26,65 @@ export default class Tree {
     else return this.build(arr);
   }
 
+  /*
+  Purpose:  Build a binary search tree given an array of integers
+  Parameters:
+    arr: an array of integers
+    start: (optional) the starting index of the array to build
+    end: (optional) the ending index of the array to build
+  Return:  The root node of a tree
+  */
   build(arr, start = 0, end = arr.length - 1) {
     if (start > end) return null;
     const middle = parseInt((start + end) / 2);
     const root = new Node(arr[middle]);
-    root.setLeft(this.build(arr, start, middle - 1));
-    root.setRight(this.build(arr, middle + 1, end));
+    root.left = this.build(arr, start, middle - 1);
+    root.right = this.build(arr, middle + 1, end);
 
     return root;
   }
 
+  /*
+  Purpose:  Insert a node into a tree
+  Parameters:
+    value: the value of the new node
+    node: (optional) the root of the tree to insert the new node
+  Return:  the new node inserted into the tree
+  */
   insert(value, node = this.root) {
     //Recursion base cases
     if (node === null) {
       return new Node(value);
     }
-    if (node.value === value) return;
+    if (node.value === value) return node;
 
-    //Recursive functioning
+    //Inserts the node to the left if it is less then the root
     if (value < node.value) node.left = this.insert(value, node.left);
+    //Inserts the node to the right if it is greater then the root
     else node.right = this.insert(value, node.right);
     return node;
   }
 
+  /*
+  Purpose:  determines the smallest value in a tree
+  Parameters:
+    node:  the root of the tree to find the smallest value
+  Return:  the node with the smallest value
+  */
   minValueNode(node) {
     const currentNode = node;
     while (currentNode && currentNode.left != null)
       currentNode = currentNode.left;
     return currentNode;
   }
+  /*
+  Purpose:  deletes the node from the tree with the given value
+  Parameters:
+    value:  the value to delete from the tree
+    node: (optional) the tree to search the value for
+
+  Return:  the root node of the tree
+  */
 
   delete(value, node = this.root) {
     //Base case, not node with that value exists
@@ -70,6 +107,14 @@ export default class Tree {
     return node;
   }
 
+  /*
+  Purpose:  find the node from the tree with the given value
+  Parameters:
+    value:  the value to find from the The height of a treetree
+    node: (optional) the tree to search the value for
+
+  Return:  the node of the tree with the given value
+  */
   find(value, node = this.root) {
     if (node === null || node.value === value) return node;
 
@@ -80,6 +125,14 @@ export default class Tree {
     }
   }
 
+  /*
+  Purpose:  traverses a tree by level
+  Parameters:  
+    callback: run a function with each node
+    node: (optional) the root to begin the traversal
+
+  Return:  noneThe height of a tree
+  */
   levelOrder(callback, node = this.root) {
     const queue = [];
     if (node === null) return;
@@ -92,6 +145,15 @@ export default class Tree {
     }
   }
 
+  /*
+  Purpose:  in order traversal of a tree
+  Parameters:  
+    callback: run a function with each node
+    node: (optional) the root to begin the traversal
+    result:(optional) an array to store values as it traverses the tree
+  Return:  An in order array of the tree
+  */
+
   inOrder(callback, node = this.root, result = []) {
     if (node === null) return;
 
@@ -102,6 +164,14 @@ export default class Tree {
     return result;
   }
 
+  /*
+  Purpose:  pre order traversal of a tree
+  Parameters:  
+    callback: run a function with each node
+    node: (optional) the root to begin the traversal
+    result:(optional) an array to store values as it traverses the tree
+  Return:  An pre order array of the trThe height of a treeee
+  */
   preOrder(callback, node = this.root, result = []) {
     if (node === null) return;
 
@@ -112,6 +182,14 @@ export default class Tree {
     return result;
   }
 
+  /*
+  Purpose:  post order traversal of a tree
+  Parameters:  
+    callback: run a function with each node
+    node: (optional) the root to begin the traversal
+    result:(optional) an array to store values as it traverses the tree
+  Return:  An post order array of the tree
+  */
   postOrder(callback, node = this.root, result = []) {
     if (node === null) return;
 
@@ -121,6 +199,13 @@ export default class Tree {
     else callback(node);
     return result;
   }
+
+  /*
+  Purpose:  determines the height of a  tree
+  Parameters:  
+    node: (optional) the root to begin calculation
+  Return:  The height of a tree
+  */
 
   height(node = this.root) {
     if (node === null) return 0;
@@ -132,6 +217,14 @@ export default class Tree {
     return rightHeight + 1;
   }
 
+  /*
+  Purpose:  determines the depth of a node
+  Parameters:  
+    node: the node to determine the depth of
+    distance: (optional) the number of edges to the root
+    root: (optional) the root of the tree
+  Return:  The depth of the node
+  */
   depth(node, distance = -1, root = this.root) {
     if (node === null || root === null) return -1;
     if (root.value === node.value) return 1 + distance;
@@ -143,6 +236,12 @@ export default class Tree {
     return distance;
   }
 
+  /*
+  Purpose:  determines if a tree is balanced
+  Parameters:  
+    node: (optional) the root to begin calculation
+  Return:  boolean
+  */
   isBalanced(node = this.root) {
     if (node === null) return true;
 
@@ -157,9 +256,24 @@ export default class Tree {
     return false;
   }
 
+  /*
+  Purpose:  rebalances a the current tree
+  Parameters:  none
+  Return:  none
+  */
+
   rebalance() {
     this.root = new Tree(this.inOrder()).root;
   }
+ 
+  /*
+  Purpose:  a visual representation of a tree
+  Parameters:  
+    node: (optional) the root to begin printing
+    prefix: the edges of a node
+    isLeft: if there is more of the tree to print
+  Return:  none
+  */
 
   prettyPrint(node = this.root, prefix = "", isLeft = true) {
     if (node === null) {
@@ -177,91 +291,4 @@ export default class Tree {
       this.prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
     }
   }
-} /*
-/*
-const prettyPrint = (node = tree.root, prefix = "", isLeft = true) => {
-  if (node === null) {
-    return;
-  }
-  if (node.right !== null) {
-    prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
-  }
-  console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.value}`);
-  if (node.left !== null) {
-    prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
-  }
-}; /*
-/*
-const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-const tree = new Tree(arr);
-console.log(tree);
-prettyPrint();
-
-tree.insert(415);
-tree.insert(21);
-tree.insert(6);
-prettyPrint();
-
-tree.delete(9);
-tree.delete(500);
-tree.delete(5);
-prettyPrint();
-
-console.log("level Order");
-tree.levelOrder((elem) => {
-  console.log(elem.value);
-});
-
-console.log("in Order");
-tree.inOrder((elem) => {
-  console.log(elem.value);
-});
-console.log(tree.inOrder());
-
-console.log("pre Order");
-tree.preOrder((elem) => {
-  console.log(elem.value);
-});
-console.log(tree.preOrder());
-
-console.log(tree.postOrder());
-console.log("post Order");
-tree.postOrder((elem) => {
-  console.log(elem.value);
-});
-console.log(tree.postOrder());
-
-console.log(tree.height());
-/*
-console.log(tree.find(6345));
-console.log("depth" + tree.depth(tree.find(6345)));
-
-console.log(tree.find(23));
-console.log("depth" + tree.depth(tree.find(23)));
-
-console.log(tree.find(8));
-console.log("depth" + tree.depth(tree.find(8)));
-
-console.log(tree.find(415));
-console.log("depth" + tree.depth(tree.find(415)));
-
-console.log(tree.find(7));
-console.log("depth" + tree.depth(tree.find(7)));
-*/
-console.log ('is balanced: ' + tree.isBalanced());
-
-const arr2 = [1, 7, 4, 23, 8,12, 16, 133];
-
-const tree2 = new Tree(arr2);
-prettyPrint(tree2.root);
-
-console.log ('is Balanced: ' + tree2.isBalanced());
-
-tree2.insert(144);
-tree2.insert(155);
-console.log ('is Balanced: ' + tree2.isBalanced());
-prettyPrint(tree2.root);
-console.log ('rebalanced');
-tree2.rebalance();
-prettyPrint(tree2.root);
-*/
+}
